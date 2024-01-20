@@ -59,24 +59,25 @@ tag* ReadARNV(char *file_path,int *count){
 				perror("Не удалось считать кадр");
 				exit(8);
 			}
-			
-			//Выделение памяти под первый элемент листа тегов 
-			if(begin == NULL){
-				begin = (tmp_tag_list*)calloc(1,sizeof(tmp_tag_list));
-				current = begin;
-			}
 
 			int tagsCount = frameDataLength/5;
 
+			//Проверка кратности длины данных кадра длине тега
 			if(frameDataLength % 5 == 0){
 				allTagsCount += tagsCount;
 			}
 			else{
-				perror("Длина данных тега не кратна 5");
+				perror("Длина данных кадра не кратна 5");
 				exit(9);
 			}
-
+			
+			//Чтение тегов
 			for(int i = 0; i < tagsCount; i++){
+				//Выделение памяти под первый элемент листа тегов 
+				if(begin == NULL){
+					begin = (tmp_tag_list*)calloc(1,sizeof(tmp_tag_list));
+					current = begin;
+				}
 
 				if(current == NULL){
 					perror("Не удалось выделить память под тег");
@@ -85,6 +86,7 @@ tag* ReadARNV(char *file_path,int *count){
 
 				current->aTag.unixTime = frameDataTime;
 
+				//Чтение тега
 				if(fread(&current->aTag.tagNumber,1,1,arnvFile) != 1){
 					perror("Не удалось считать номер тега");
 					exit(11);
@@ -95,9 +97,11 @@ tag* ReadARNV(char *file_path,int *count){
 					exit(12);
 				}
 
+				//Следующий тег
 				current->next = (tmp_tag_list*)calloc(1,sizeof(tmp_tag_list));
 				current = current->next;
 			}
+			//Пропуск байта контрольной суммы
 			fseek(arnvFile,1,SEEK_CUR);
 		}
 	}
