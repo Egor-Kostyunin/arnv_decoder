@@ -46,13 +46,13 @@ tag* ReadARNV(char *file_path,int *count){
 		//Чтение кадров
 		while(fread(&frameType,1,1,arnvFile) == 1){
 
+			//Проверка на конец набора кадров
+			if(frameType == 0x5D) break;
+
 			if(frameType != 0x01){
 				puts("Пропущен кадр с неподдерживаемым типом");
 				continue;
 			}
-
-			//Проверка на конец набора кадров
-			if(frameType == 0x5D) break;
 
 			if(fread(&frameDataLength,2,1,arnvFile) != 1 ||
 			   fread(&frameDataTime,4,1,arnvFile) != 1){
