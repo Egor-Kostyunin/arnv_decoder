@@ -16,7 +16,7 @@
  */
 typedef struct tag_struct{
 	int32_t unixTime;
-	uint8_t int tagNumber;
+	uint8_t tagNumber;
 	int32_t tagData;
 } tag;
 

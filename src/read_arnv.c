@@ -14,7 +14,7 @@ tag* ReadARNV(char *file_path,int *count){
 
 	int allTagsCount = 0;
 
-	FILE arnvFile =  open(file_path,"r");
+	FILE *arnvFile =  fopen(file_path,"r");
 
 	while(feof(arnvFile) == 0){
 
@@ -25,7 +25,7 @@ tag* ReadARNV(char *file_path,int *count){
 			exit(5);
 		}
 
-		if(fread(arnvFile,1,2,framesSetBegin) != 2){
+		if(fread(framesSetBegin,1,2,arnvFile) != 2){
 			perror("Не удалось считать начало набора кадров");
 			exit(6);
 		}
@@ -41,7 +41,7 @@ tag* ReadARNV(char *file_path,int *count){
 		uint16_t frameDataLength = 0;
 		int32_t frameDataTime = 0;
 
-		while(fread(arnvFile,1,1,&frameType) == 1){
+		while(fread(&frameType,1,1,arnvFile) == 1){
 
 			if(frameType != 0x01){
 				puts("Пропущен кадр с неподдерживаемым типом");
@@ -50,8 +50,8 @@ tag* ReadARNV(char *file_path,int *count){
 
 			if(frameType == 0x5D) break;
 
-			if(fread(arnvFile,2,1,&frameDataLength) != 1 ||
-			   fread(arnvFile,4,1,&frameDataTime) != 1){
+			if(fread(&frameDataLength,2,1,arnvFile) != 1 ||
+			   fread(&frameDataTime,4,1,arnvFile) != 1){
 				perror("Не удалось считать кадр");
 				exit(8);
 			}
@@ -78,14 +78,14 @@ tag* ReadARNV(char *file_path,int *count){
 					exit(10);
 				}
 
-				current->aTeg.unixTime = frameDataTime;
+				current->aTag.unixTime = frameDataTime;
 
-				if(fread(arnvFile,1,1,&current->aTag.tagNumber) != 1){
+				if(fread(&current->aTag.tagNumber,1,1,arnvFile) != 1){
 					perror("Не удалось считать номер тега");
 					exit(11);
 				}
 
-				if(fread(arnvFile,4,1,&current->aTag.tagData) != 1){
+				if(fread(&current->aTag.tagData,4,1,arnvFile) != 1){
 					perror("Не удалось считать значение тега");
 					exit(12);
 				}
@@ -101,7 +101,7 @@ tag* ReadARNV(char *file_path,int *count){
 
 	int index = 0;
 
-	tag *tagsArray = (tag*)calloc(allTagsCount,sizeof(tags));
+	tag *tagsArray = (tag*)calloc(allTagsCount,sizeof(tag));
 
 	for(tmp_tag_list *item = begin; item != NULL && index < allTagsCount ;index++){
 		current = item;
