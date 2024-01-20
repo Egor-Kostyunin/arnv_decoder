@@ -25,11 +25,13 @@ tag* ReadARNV(char *file_path,int *count){
 			exit(5);
 		}
 
+		//Чтение начала набора кадров
 		if(fread(framesSetBegin,1,2,arnvFile) != 2){
 			perror("Не удалось считать начало набора кадров");
 			exit(6);
 		}
 
+		//Проверка начала набора кадров
 		if(framesSetBegin[0] != 0x5B ||
 		   framesSetBegin[1] > 0xFB ||
 		   framesSetBegin[1] < 0x01){
@@ -37,10 +39,11 @@ tag* ReadARNV(char *file_path,int *count){
 			exit(7);
 		}
 
-		uint8_t frameType = 0;
-		uint16_t frameDataLength = 0;
-		int32_t frameDataTime = 0;
-
+		uint8_t frameType = 0;//Тип кадра
+		uint16_t frameDataLength = 0;//Длина данных кадра
+		int32_t frameDataTime = 0;//Время снятия данных
+		
+		//Чтение кадров
 		while(fread(&frameType,1,1,arnvFile) == 1){
 
 			if(frameType != 0x01){
@@ -48,6 +51,7 @@ tag* ReadARNV(char *file_path,int *count){
 				continue;
 			}
 
+			//Проверка на конец набора кадров
 			if(frameType == 0x5D) break;
 
 			if(fread(&frameDataLength,2,1,arnvFile) != 1 ||
@@ -55,7 +59,8 @@ tag* ReadARNV(char *file_path,int *count){
 				perror("Не удалось считать кадр");
 				exit(8);
 			}
-
+			
+			//Выделение памяти под первый элемент листа тегов 
 			if(begin == NULL){
 				begin = (tmp_tag_list*)calloc(1,sizeof(tmp_tag_list));
 				current = begin;
@@ -63,7 +68,7 @@ tag* ReadARNV(char *file_path,int *count){
 
 			int tagsCount = frameDataLength/5;
 
-			if(tagsCount % 5 == 0){
+			if(frameDataLength % 5 == 0){
 				allTagsCount += tagsCount;
 			}
 			else{
