@@ -39,10 +39,10 @@ typedef struct tags_dict_struct{
 	char tagFormatString[MAX_FORMAT_STR_SIZE];
 } tags_dict;
 
-/**@brief DictLoad - загружает словарь тегов из файла tags.dict
+/**@brief LoadDict - загружает словарь тегов из файла tags.dict
  * @details Вызвать эту функцию первой
  */
-void DictLoad();
+void LoadDict();
 
 /**@brief ReadARNV - Извлекает теги из arnv файла
  * @details Считвает arnv файл и возвращает массив извлеченых тегов
