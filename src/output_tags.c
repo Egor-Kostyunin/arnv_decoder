@@ -31,7 +31,6 @@ void OutputTags(tag *tags_array, int tags_count){
 			char *varType = strtok(NULL,"|");
 			int varSize = 4;
 			char isInteger = 1;
-			puts(varType);
 			for(int i = 0; i < 3;i++){
 				if(varType[i] == 'i'){
 					isInteger = 1;
@@ -47,15 +46,20 @@ void OutputTags(tag *tags_array, int tags_count){
 				}
 				if(varType[i] == 'h') varSize /= 2;
 			}
-			bitsNotRead =- varSize * 8;
+			bitsNotRead -= varSize * 8;
 			uint32_t bitMask = 0;
 			for(int k = 0; k < varSize * 8 - 1; k++){
 				bitMask |= 1;
 				bitMask <<= 1;			
 			}
 			bitMask |= 1;
-			int32_t varValue = (tags_array[i].tagData & bitMask) >> bitsNotRead;
-			struct tm *dt = localtime((time_t*)&tags_array[i].unixTime);\
+			int32_t varValue = (tags_array[i].tagData >> bitsNotRead) & bitMask;
+			time_t tagTime = tags_array[i].unixTime;
+			struct tm *dt = localtime(&tagTime);\
+			if(dt == NULL){
+				puts("Не удалось определить время");
+				exit(13);
+			}
 			char base_str[2*MAX_FORMAT_STR_SIZE] = "[%d.%d.%d-%d:%d:%d] %s: ";
 			if(isInteger){
 				strcat(base_str,"%d\n");
@@ -63,14 +67,15 @@ void OutputTags(tag *tags_array, int tags_count){
 			else{
 				strcat(base_str,"%f\n");
 			}
-			printf(base_str,varName,
-					varValue,
-					dt->tm_mday,
+			printf(base_str,dt->tm_mday,
 					dt->tm_mon + 1,
 					dt->tm_year + 1900,
 					dt->tm_hour,
 					dt->tm_min,
-					dt->tm_sec);
+					dt->tm_sec,
+					varName,
+					varValue);
+
 		}
 	}
 	puts("Конец вывода");
