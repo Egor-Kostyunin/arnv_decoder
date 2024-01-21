@@ -1,8 +1,9 @@
-7
+8
 1 Бортовое_напряжение_в_мВ%hi|Напряжение_резерв._аккумулятора%hi
 3 Широта%f
 4 Долгота%f
-5 Скорость(в_узлах)%f|Спутники_GPS%hh1111|Спутники_Glonass%hh1111|Высота_над_уровнем_моря(в_метрах_/_10)%hhi|Курс%hhi
+5 Скорость(в_узлах)%f|Спутники_GPS%hhh|Спутники_Glonass%hhh|Высота_над_уровнем_моря(в_метрах_/_10)%hhi|Курс%hhi
 7 LAC%hi|CID%hi
 8 Уровень_сигнала_GSM%hhi|MCC%hi|MNC%hhi
+9 IN0%hhhhhi|IN1%hhhhhi|IN2%hhhhhi|IN3%hhhhhi|IN4%hhhhhi|IN5%hhhhhi|IN6%hhhhhi|IN7%hhhhhi|OUT0%hhhhhi|OUT1%hhhhhi|OUT2%hhhhhi|OUT3%hhhhhi|Состояние_GSM_модема%hhhhi|Cостояние_GPS/Glonass_модуля%hhhhi|Датчик_движения%hhhhhi|SIM%hhhhhi|SIM_INSERT%hhhhhi|ST0%hhhhhi|ST1%hhhhhi|ST2%hhhhhi|АКБ%hhhhi|VOLT%hhi
 250 Информационные_сообщения%i
