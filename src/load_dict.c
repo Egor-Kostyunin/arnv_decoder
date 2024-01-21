@@ -31,12 +31,13 @@ void LoadDict(){
 	char tagFormatString[MAX_FORMAT_STR_SIZE];
 	int tagsCount = 0;
 
-	while(fscanf(dictFile,"%d \"%s\"\n",&tagNumber,tagFormatString) == 2){
+	while(fscanf(dictFile,"%d %s\n",&tagNumber,tagFormatString) == 2){
 		if(tagsCount == dictSize){
 			perror("Размер словаря указанный в файле tags.dict меньше фактического размера часть словаря не будет загружена");
 			break;
 		}
 		tagsDict[tagsCount].tagNumber = tagNumber;
+		puts(tagFormatString);
 		strcpy(tagsDict[tagsCount].tagFormatString,tagFormatString);
 		tagsCount++;
 	}

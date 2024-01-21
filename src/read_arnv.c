@@ -16,17 +16,18 @@ tag* ReadARNV(char *file_path,int *count){
 
 	FILE *arnvFile =  fopen(file_path,"r");
 
+	if(arnvFile == NULL){
+		perror("Не удалось открыть arnv файл");
+		exit(5);
+	}
+
 	while(feof(arnvFile) == 0){
 
 		uint8_t framesSetBegin[2];
 
-		if(arnvFile == NULL){
-			perror("Не удалось открыть arnv файл");
-			exit(5);
-		}
-
 		//Чтение начала набора кадров
 		if(fread(framesSetBegin,1,2,arnvFile) != 2){
+			if(feof(arnvFile) != 0) continue;
 			perror("Не удалось считать начало набора кадров");
 			exit(6);
 		}

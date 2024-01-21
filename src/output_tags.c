@@ -9,8 +9,10 @@ extern tags_dict *tagsDict;
 extern int dictSize;
 
 void OutputTags(tag *tags_array, int tags_count){
+	printf("%d\n",tags_count);
 	for(int i = 0; i < tags_count; i++){
 		char buffer[MAX_FORMAT_STR_SIZE];
+		memset(buffer,0,sizeof(char)*MAX_FORMAT_STR_SIZE);
 		char tagFound = 0;
 		for(int j = 0; j < dictSize; j++){
 			if(tagsDict[j].tagNumber == tags_array[i].tagNumber){
@@ -21,6 +23,7 @@ void OutputTags(tag *tags_array, int tags_count){
 		}
 		if(tagFound == 0){
 			puts("Пропущен не распознанный тег");
+			printf("Номер тега: %d\n",tags_array[i].tagNumber);
 			continue;
 		}
 		int bitsNotRead = 32;
@@ -28,6 +31,7 @@ void OutputTags(tag *tags_array, int tags_count){
 			char *varType = strtok(NULL,"|");
 			int varSize = 4;
 			char isInteger = 1;
+			puts(varType);
 			for(int i = 0; i < 3;i++){
 				if(varType[i] == 'i'){
 					isInteger = 1;
@@ -69,4 +73,5 @@ void OutputTags(tag *tags_array, int tags_count){
 					dt->tm_sec);
 		}
 	}
+	puts("Конец вывода");
 }
