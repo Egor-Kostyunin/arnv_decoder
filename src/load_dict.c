@@ -37,7 +37,6 @@ void LoadDict(){
 			break;
 		}
 		tagsDict[tagsCount].tagNumber = tagNumber;
-		puts(tagFormatString);
 		strcpy(tagsDict[tagsCount].tagFormatString,tagFormatString);
 		tagsCount++;
 	}
