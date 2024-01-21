@@ -31,7 +31,8 @@ void OutputTags(tag *tags_array, int tags_count){
 			char *varType = strtok(NULL,"|");
 			int varSize = 32;
 			char isInteger = 1;
-			for(int i = 0; i < 3;i++){
+			int varTLen = strlen(varType);
+			for(int i = 0; i < varTLen;i++){
 				if(varType[i] == 'i'){
 					isInteger = 1;
 					break;
