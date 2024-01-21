@@ -29,7 +29,7 @@ void OutputTags(tag *tags_array, int tags_count){
 		int bitsNotRead = 32;
 		for(char *varName = strtok(buffer,"%"); varName != NULL; varName = strtok(NULL,"%")){
 			char *varType = strtok(NULL,"|");
-			int varSize = 4;
+			int varSize = 32;
 			char isInteger = 1;
 			for(int i = 0; i < 3;i++){
 				if(varType[i] == 'i'){
@@ -45,10 +45,11 @@ void OutputTags(tag *tags_array, int tags_count){
 					exit(13);
 				}
 				if(varType[i] == 'h') varSize /= 2;
+				if(varType[i] == '1') varSize -= 1;
 			}
-			bitsNotRead -= varSize * 8;
+			bitsNotRead -= varSize;
 			uint32_t bitMask = 0;
-			for(int k = 0; k < varSize * 8 - 1; k++){
+			for(int k = 0; k < varSize - 1; k++){
 				bitMask |= 1;
 				bitMask <<= 1;			
 			}
