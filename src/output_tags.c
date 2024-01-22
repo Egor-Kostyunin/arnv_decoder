@@ -75,11 +75,7 @@ void OutputTags(tag *tags_array, int tags_count){
 			char base_str[2*MAX_FORMAT_STR_SIZE] = "[%d.%d.%d-%d:%d:%d] %s: ";
 			if(isInteger){
 				strcat(base_str,"%d\n");
-			}
-			else{
-				strcat(base_str,"%f\n");
-			}
-			printf(base_str,dt->tm_mday,
+				printf(base_str,dt->tm_mday,
 					dt->tm_mon + 1,
 					dt->tm_year + 1900,
 					dt->tm_hour,
@@ -87,6 +83,22 @@ void OutputTags(tag *tags_array, int tags_count){
 					dt->tm_sec,
 					varName,
 					varValue);
+			}
+			else{
+				strcat(base_str,"%f\n");
+				float *tmpFltPtr = (float*) &varValue;
+				float varFValue = *tmpFltPtr;
+				
+				printf(base_str,dt->tm_mday,
+					dt->tm_mon + 1,
+					dt->tm_year + 1900,
+					dt->tm_hour,
+					dt->tm_min,
+					dt->tm_sec,
+					varName,
+					varFValue);
+			}
+			
 
 		}
 	}
